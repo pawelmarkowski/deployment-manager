@@ -1,9 +1,19 @@
 import logging
-from src.database import SessionLocal
-from src.models import Product, Team, Service, Project, Config, Template, ServiceDependencyTemplate
+
+from src.database import SessionLocal, init_db
+from src.models import (
+    Config,
+    Product,
+    Project,
+    Service,
+    ServiceDependencyTemplate,
+    Team,
+    Template,
+)
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
 
 def seed_data():
     db = SessionLocal()
@@ -57,7 +67,7 @@ def seed_data():
             template_id=template1.id,
             base_service_id=service2.id,
             dependent_service_id=service1.id,
-            config_name="Default"
+            config_name="Default",
         )
         db.add(sdt1)
         db.commit()
@@ -67,5 +77,7 @@ def seed_data():
     finally:
         db.close()
 
+
 if __name__ == "__main__":
+    init_db()  # Ensure all tables are created
     seed_data()

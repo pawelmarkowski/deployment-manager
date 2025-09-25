@@ -15,8 +15,7 @@ docker_build(
     live_update=[
         sync('./src', '/app/src'),
         sync('./main.py', '/app/main.py'),
-        live_update.run('pip install -r requirements.txt', trigger='./requirements.txt'),
-        live_update.restart_process()
+        run('pip install -r requirements.txt', trigger='./requirements.txt')
     ]
 )
 
@@ -27,8 +26,7 @@ docker_build(
     live_update=[
         sync('./web_ui', '/app/web_ui'),
         sync('./src', '/app/src'),
-        live_update.run('pip install -r requirements.txt', trigger='./requirements.txt'),
-        live_update.restart_process()
+        run('pip install -r requirements.txt', trigger='./requirements.txt')
     ]
 )
 
@@ -47,7 +45,7 @@ k8s_yaml('k8s/grpcui.yaml')
 k8s_resource('grpcui', port_forwards='8080:8080')
 
 k8s_yaml('k8s/web-ui.yaml')
-k8s_resource(WEB_UI_NAME, port_forwards='8000:80')
+k8s_resource(WEB_UI_NAME, port_forwards='8000:8000')
 
 # --- Kubernetes Job for Seeding ---
 k8s_yaml('k8s/seeder-job.yaml')
