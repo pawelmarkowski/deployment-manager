@@ -1,5 +1,6 @@
 from concurrent import futures
 import grpc
+from grpc_reflection.v1alpha import reflection
 from src.generated import system_pb2
 from src.generated import system_pb2_grpc
 from src.database import SessionLocal
@@ -242,9 +243,16 @@ class SystemServicer(system_pb2_grpc.SystemServicer):
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    # The servicer is now instantiated with the default session factory
     system_pb2_grpc.add_SystemServicer_to_server(SystemServicer(), server)
+
+    # Enable reflection
+    SERVICE_NAMES = (
+        system_pb2.DESCRIPTOR.services_by_name['System'].full_name,
+        reflection.SERVICE_NAME,
+    )
+    reflection.enable_server_reflection(SERVICE_NAMES, server)
+
     server.add_insecure_port('[::]:50051')
     server.start()
-    print("Server started on port 50051")
+    print("Server started on port 50051 with reflection enabled.")
     server.wait_for_termination()
