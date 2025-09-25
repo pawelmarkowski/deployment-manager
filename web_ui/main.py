@@ -111,6 +111,20 @@ async def get_product(request: Request, product_id: int):
     )
 
 
+@app.get("/products/{product_id}/edit", response_class=HTMLResponse)
+async def edit_product(request: Request, product_id: int):
+    product = STUB.GetProduct(system_pb2.GetProductRequest(id=product_id))
+    return templates.TemplateResponse(
+        "product_edit.html", {"request": request, "product": product}
+    )
+
+
+@app.post("/products/{product_id}/edit", response_class=HTMLResponse)
+async def update_product(request: Request, product_id: int, name: str = Form(...)):
+    STUB.UpdateProduct(system_pb2.UpdateProductRequest(id=product_id, name=name))
+    return await get_product(request, product_id)
+
+
 # --- Team Routes ---
 @app.get("/teams", response_class=HTMLResponse)
 async def list_teams(request: Request, search: str = ""):

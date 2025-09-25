@@ -1,0 +1,11 @@
+<div class="space-y-4">
+    <a href="/" hx-get="/products" hx-target="#content" class="text-blue-500 hover:underline">&larr; Back to Products</a>
+    <h2 class="text-2xl font-bold">Edit Product</h2>
+    <form hx-post="/products/{{ product.id }}/edit" hx-target="#content" hx-swap="outerHTML" class="space-y-4">
+        <div>
+            <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+            <input type="text" id="name" name="name" value="{{ product.name }}" class="p-2 border rounded w-full">
+        </div>
+        <button type="submit" class="p-2 bg-yellow-500 text-white rounded">Save</button>
+    </form>
+</div>

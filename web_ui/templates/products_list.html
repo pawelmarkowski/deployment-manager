@@ -17,7 +17,10 @@
         {% for product in products %}
         <div class="p-4 bg-gray-50 rounded shadow-sm flex justify-between items-center">
             <span class="font-semibold">{{ product.name }}</span>
-            <a href="/products/{{ product.id }}" hx-get="/products/{{ product.id }}" hx-target="#content" class="text-sm text-blue-500 hover:underline">View Details</a>
+            <div class="space-x-2">
+                <a href="/products/{{ product.id }}" hx-get="/products/{{ product.id }}" hx-target="#content" class="text-sm text-blue-500 hover:underline">View</a>
+                <a href="/products/{{ product.id }}/edit" hx-get="/products/{{ product.id }}/edit" hx-target="#content" class="text-sm text-yellow-500 hover:underline">Edit</a>
+            </div>
         </div>
         {% endfor %}
     </div>
