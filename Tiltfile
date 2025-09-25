@@ -1,8 +1,7 @@
-# Load extensions directly from the official Tilt repository for robustness
-load('github.com/tilt-dev/tilt-extensions/k8s_yaml/Tiltfile', 'k8s_yaml')
-load('github.com/tilt-dev/tilt-extensions/docker_build/Tiltfile', 'docker_build')
-load('github.com/tilt-dev/tilt-extensions/live_update/Tiltfile', 'live_update')
+# Load the restart_process extension
+load('ext://restart_process', 'docker_build_with_restart')
 
+allow_k8s_contexts('^colima.*$')
 # --- Configuration ---
 APP_IMAGE = 'my-python-app'
 APP_NAME = 'python-app'
@@ -10,32 +9,30 @@ DB_NAME = 'postgres'
 
 # --- Docker Image Build ---
 # Build the Docker image for the Python application
-docker_build(
+docker_build_with_restart(
     APP_IMAGE,
     '.',
+    entrypoint=['python', '/app/main.py'],
     live_update=[
         # Sync changes from the local 'src' directory to the container's '/app/src'
-        live_update.sync('./src', '/app/src'),
+        sync('./src', '/app/src'),
         # When requirements change, reinstall them without a full image rebuild
-        live_update.run(
+        run(
             'pip install -r requirements.txt',
             trigger='./requirements.txt'
         ),
-        # Restart the application process when source code changes
-        live_update.restart_process(
-            'python main.py',
-            trigger=['./src', './main.py']
-        )
     ]
 )
 
 # --- Kubernetes Resources ---
-# Check for the local password file and create it if it doesn't exist
-if not os.path.exists('postgres-password.txt'):
-    fail("File 'postgres-password.txt' not found. Please create it with your desired database password.")
+# Read the password from the local file. Tilt will fail with a clear error
+# if this file doesn't exist, which is the desired behavior.
+password = str(read_file('postgres-password.txt')).strip()
 
-# Deploy the PostgreSQL secret, injecting the password from the local file
-k8s_yaml(k8s_yaml('k8s/secrets.yaml').replace('password: ""', 'password: %s' % open('postgres-password.txt').read().strip()))
+# Read the secrets YAML file, inject the password, and deploy it.
+secrets_yaml = str(read_file('k8s/secrets.yaml')).replace('password: ""', 'password: "%s"' % password)
+k8s_yaml(blob(secrets_yaml))
+
 
 # Deploy the PostgreSQL database
 k8s_yaml('k8s/postgres.yaml')
@@ -54,8 +51,8 @@ k8s_resource('grpcui', port_forwards='8080:8080')
 # Command to seed the database. This runs once the DB is ready.
 local_resource(
     'db:seed',
-    cmd='python src/seed.py',
-    deps=['src/seed.py', 'src/models.py'],
+    cmd='venv/bin/python src/seed.py',
+    deps=['src/seed.py', 'src/models.py', 'venv'],
     resource_deps=[DB_NAME]
 )
 
@@ -75,10 +72,6 @@ local_resource(
 
 # Group the linters for a cleaner UI
 update_settings(
-    ui_groups=[
-        {'name': 'linters', 'resources': ['lint:flake8', 'lint:pylint']},
-        {'name': 'app', 'resources': [APP_NAME]},
-        {'name': 'db', 'resources': [DB_NAME, 'db:seed']},
-        {'name': 'ui', 'resources': ['grpcui']}
-    ]
+    k8s_upsert_timeout_secs=60,
+    suppress_unused_image_warnings=['my-python-app']
 )
