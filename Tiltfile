@@ -1,9 +1,7 @@
-import os
-
-# Load extensions for additional functionality
-load('ext://k8s_yaml', 'k8s_yaml')
-load('ext://docker_build', 'docker_build')
-load('ext://live_update', 'live_update')
+# Load extensions directly from the official Tilt repository for robustness
+load('github.com/tilt-dev/tilt-extensions/k8s_yaml/Tiltfile', 'k8s_yaml')
+load('github.com/tilt-dev/tilt-extensions/docker_build/Tiltfile', 'docker_build')
+load('github.com/tilt-dev/tilt-extensions/live_update/Tiltfile', 'live_update')
 
 # --- Configuration ---
 APP_IMAGE = 'my-python-app'
