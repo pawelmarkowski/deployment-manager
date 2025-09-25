@@ -95,21 +95,27 @@ class TestModels(unittest.TestCase):
         self.assertEqual(dependency.config, config)
 
     def test_create_service_dependency_template(self):
+        product = Product(name="Test Product")
+        team = Team(name="Test Team", product=product)
+        service1 = Service(name="Service 1", team=team)
+        service2 = Service(name="Service 2", team=team)
         template = Template(name="Test Template")
-        self.session.add(template)
+        self.session.add_all([product, team, service1, service2, template])
         self.session.commit()
 
         sdt = ServiceDependencyTemplate(
             name="Test SDT",
             template_id=template.id,
-            service_name="Service A",
-            depends_on_service_name="Service B",
+            base_service_id=service1.id,
+            dependent_service_id=service2.id,
             config_name="Config X"
         )
         self.session.add(sdt)
         self.session.commit()
         self.assertEqual(self.session.query(ServiceDependencyTemplate).count(), 1)
         self.assertEqual(sdt.template, template)
+        self.assertEqual(sdt.base_service, service1)
+        self.assertEqual(sdt.dependent_service, service2)
 
     def test_create_task(self):
         product = Product(name="Test Product")

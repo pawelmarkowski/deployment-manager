@@ -119,8 +119,8 @@ message ServiceDependencyTemplate {
     int32 id = 1;
     string name = 2;
     int32 template_id = 3;
-    string service_name = 4;
-    string depends_on_service_name = 5;
+    int32 base_service_id = 4;
+    int32 dependent_service_id = 5;
     string config_name = 6;
 }
 
@@ -183,7 +183,7 @@ message ListTemplatesResponse { repeated Template templates = 1; }
 message DeleteTemplateRequest { int32 id = 1; }
 
 // ServiceDependencyTemplate
-message CreateServiceDependencyTemplateRequest { string name = 1; int32 template_id = 2; string service_name = 3; string depends_on_service_name = 4; string config_name = 5; }
+message CreateServiceDependencyTemplateRequest { string name = 1; int32 template_id = 2; int32 base_service_id = 3; int32 dependent_service_id = 4; string config_name = 5; }
 message GetServiceDependencyTemplateRequest { int32 id = 1; }
 message ListServiceDependencyTemplatesRequest {}
 message ListServiceDependencyTemplatesResponse { repeated ServiceDependencyTemplate service_dependency_templates = 1; }

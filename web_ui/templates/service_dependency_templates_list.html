@@ -1,0 +1,35 @@
+<div id="sdt-list" class="space-y-4">
+    <h2 class="text-2xl font-bold">Service Dependency Templates</h2>
+
+    <form hx-post="/service-dependency-templates" hx-target="#sdt-list" hx-swap="outerHTML" class="flex space-x-4">
+        <input type="text" name="name" placeholder="New SDT name" class="p-2 border rounded w-full">
+        <select name="template_id" class="p-2 border rounded">
+            <option value="">Select Template</option>
+            {% for template in templates %}
+                <option value="{{ template.id }}">{{ template.name }}</option>
+            {% endfor %}
+        </select>
+        <select name="base_service_id" class="p-2 border rounded">
+            <option value="">Select Base Service</option>
+            {% for service in services %}
+                <option value="{{ service.id }}">{{ service.name }}</option>
+            {% endfor %}
+        </select>
+        <select name="dependent_service_id" class="p-2 border rounded">
+            <option value="">Select Dependent Service</option>
+            {% for service in services %}
+                <option value="{{ service.id }}">{{ service.name }}</option>
+            {% endfor %}
+        </select>
+        <input type="text" name="config_name" placeholder="Config name" class="p-2 border rounded w-full">
+        <button type="submit" class="p-2 bg-green-500 text-white rounded">Create</button>
+    </form>
+
+    <div class="space-y-2">
+        {% for sdt in service_dependency_templates %}
+        <div class="p-4 bg-gray-50 rounded shadow-sm">
+            <p class="font-semibold">{{ sdt.name }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>

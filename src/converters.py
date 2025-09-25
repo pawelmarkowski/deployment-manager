@@ -66,8 +66,8 @@ def sdt_to_message(sdt: models.ServiceDependencyTemplate):
         id=sdt.id,
         name=sdt.name,
         template_id=sdt.template_id,
-        service_name=sdt.service_name,
-        depends_on_service_name=sdt.depends_on_service_name,
+        base_service_id=sdt.base_service_id,
+        dependent_service_id=sdt.dependent_service_id,
         config_name=sdt.config_name
     )
 

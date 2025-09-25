@@ -81,5 +81,31 @@ class TestServices(unittest.TestCase):
             self.stub.GetProduct(system_pb2.GetProductRequest(id=product_res.id))
         self.assertEqual(cm.exception.code(), grpc.StatusCode.NOT_FOUND)
 
+    def test_sdt_lifecycle(self):
+        # 1. Create dependencies: Product -> Team -> Service1, Service2
+        product_res = self.stub.CreateProduct(system_pb2.CreateProductRequest(name="P"))
+        team_res = self.stub.CreateTeam(system_pb2.CreateTeamRequest(name="T", product_id=product_res.id))
+        service1_res = self.stub.CreateService(system_pb2.CreateServiceRequest(name="S1", team_id=team_res.id))
+        service2_res = self.stub.CreateService(system_pb2.CreateServiceRequest(name="S2", team_id=team_res.id))
+        template_res = self.stub.CreateTemplate(system_pb2.CreateTemplateRequest(name="Tmpl"))
+
+        # 2. Create ServiceDependencyTemplate
+        sdt_req = system_pb2.CreateServiceDependencyTemplateRequest(
+            name="DepTmpl",
+            template_id=template_res.id,
+            base_service_id=service1_res.id,
+            dependent_service_id=service2_res.id,
+            config_name="Default"
+        )
+        sdt_res = self.stub.CreateServiceDependencyTemplate(sdt_req)
+        self.assertEqual(sdt_res.name, "DepTmpl")
+        self.assertEqual(sdt_res.base_service_id, service1_res.id)
+        self.assertEqual(sdt_res.dependent_service_id, service2_res.id)
+
+        # 3. List ServiceDependencyTemplates
+        list_sdt_res = self.stub.ListServiceDependencyTemplates(system_pb2.ListServiceDependencyTemplatesRequest())
+        self.assertEqual(len(list_sdt_res.service_dependency_templates), 1)
+        self.assertEqual(list_sdt_res.service_dependency_templates[0].name, "DepTmpl")
+
 if __name__ == '__main__':
     unittest.main()

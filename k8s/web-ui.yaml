@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-ui
+spec:
+  ports:
+    - port: 80
+      targetPort: 8000
+  selector:
+    app: web-ui
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-ui
+  template:
+    metadata:
+      labels:
+        app: web-ui
+    spec:
+      containers:
+        - name: web-ui
+          image: my-web-ui
+          ports:
+            - containerPort: 8000
+          env:
+            - name: GRPC_CHANNEL_TARGET
+              value: "python-app:50051" # The gRPC service
+      initContainers:
+      - name: wait-for-grpc
+        image: busybox:1.28
+        command: ['sh', '-c', 'until nc -z python-app 50051; do echo "waiting for gRPC server"; sleep 2; done;']

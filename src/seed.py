@@ -1,6 +1,6 @@
 import logging
 from src.database import SessionLocal
-from src.models import Product, Team, Service, Project, Config
+from src.models import Product, Team, Service, Project, Config, Template, ServiceDependencyTemplate
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -44,6 +44,22 @@ def seed_data():
         # Create Configs
         config1 = Config(name="Production DW Config", service_id=service1.id)
         db.add(config1)
+        db.commit()
+
+        # Create a Template
+        template1 = Template(name="Standard ETL Template")
+        db.add(template1)
+        db.commit()
+
+        # Create a ServiceDependencyTemplate
+        sdt1 = ServiceDependencyTemplate(
+            name="ETL to Data Warehouse",
+            template_id=template1.id,
+            base_service_id=service2.id,
+            dependent_service_id=service1.id,
+            config_name="Default"
+        )
+        db.add(sdt1)
         db.commit()
 
         logger.info("Database seeding complete.")

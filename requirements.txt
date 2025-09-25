@@ -8,3 +8,7 @@ opentelemetry-instrumentation-grpc
 pylint
 flake8
 grpcio-reflection
+fastapi
+uvicorn
+jinja2
+python-multipart

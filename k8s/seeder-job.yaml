@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: db-seeder
+spec:
+  template:
+    spec:
+      containers:
+      - name: db-seeder
+        image: my-python-app
+        command: ["python", "src/seed.py"]
+        env:
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: postgres-secret
+              key: password
+        - name: DATABASE_URL
+          value: "postgresql://user:$(POSTGRES_PASSWORD)@postgres:5432/mydatabase"
+      restartPolicy: OnFailure
+  backoffLimit: 4

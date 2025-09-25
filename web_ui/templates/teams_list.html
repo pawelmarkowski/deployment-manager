@@ -1,0 +1,30 @@
+<div id="team-list" class="space-y-4">
+    <h2 class="text-2xl font-bold">Teams</h2>
+
+    <!-- Search and Create Form -->
+    <form class="flex space-x-4 mb-4" hx-get="/teams" hx-target="#team-list" hx-swap="outerHTML">
+        <input type="search" name="search" value="{{ search }}" placeholder="Search teams..." class="p-2 border rounded w-full">
+        <button type="submit" class="p-2 bg-blue-500 text-white rounded">Search</button>
+    </form>
+
+    <form hx-post="/teams" hx-target="#team-list" hx-swap="outerHTML" class="flex space-x-4">
+        <input type="text" name="name" placeholder="New team name" class="p-2 border rounded w-full">
+        <select name="product_id" class="p-2 border rounded">
+            <option value="">Select Product</option>
+            {% for product in products %}
+                <option value="{{ product.id }}">{{ product.name }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="p-2 bg-green-500 text-white rounded">Create</button>
+    </form>
+
+    <!-- Team List -->
+    <div class="space-y-2">
+        {% for team in teams %}
+        <div class="p-4 bg-gray-50 rounded shadow-sm">
+            <p class="font-semibold">{{ team.name }}</p>
+            <p class="text-sm text-gray-600">Product ID: {{ team.product_id }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>

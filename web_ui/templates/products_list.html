@@ -1,0 +1,24 @@
+<div id="product-list" class="space-y-4">
+    <h2 class="text-2xl font-bold">Products</h2>
+
+    <!-- Search and Create Form -->
+    <form class="flex space-x-4 mb-4" hx-get="/products" hx-target="#product-list" hx-swap="outerHTML">
+        <input type="search" name="search" value="{{ search }}" placeholder="Search products..." class="p-2 border rounded w-full">
+        <button type="submit" class="p-2 bg-blue-500 text-white rounded">Search</button>
+    </form>
+
+    <form hx-post="/products" hx-target="#product-list" hx-swap="outerHTML" class="flex space-x-4">
+        <input type="text" name="name" placeholder="New product name" class="p-2 border rounded w-full">
+        <button type="submit" class="p-2 bg-green-500 text-white rounded">Create</button>
+    </form>
+
+    <!-- Product List -->
+    <div class="space-y-2">
+        {% for product in products %}
+        <div class="p-4 bg-gray-50 rounded shadow-sm flex justify-between items-center">
+            <span class="font-semibold">{{ product.name }}</span>
+            <a href="/products/{{ product.id }}" hx-get="/products/{{ product.id }}" hx-target="#content" class="text-sm text-blue-500 hover:underline">View Details</a>
+        </div>
+        {% endfor %}
+    </div>
+</div>

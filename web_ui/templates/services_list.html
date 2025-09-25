@@ -1,0 +1,23 @@
+<div id="service-list" class="space-y-4">
+    <h2 class="text-2xl font-bold">Services</h2>
+
+    <form hx-post="/services" hx-target="#service-list" hx-swap="outerHTML" class="flex space-x-4">
+        <input type="text" name="name" placeholder="New service name" class="p-2 border rounded w-full">
+        <select name="team_id" class="p-2 border rounded">
+            <option value="">Select Team</option>
+            {% for team in teams %}
+                <option value="{{ team.id }}">{{ team.name }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="p-2 bg-green-500 text-white rounded">Create</button>
+    </form>
+
+    <div class="space-y-2">
+        {% for service in services %}
+        <div class="p-4 bg-gray-50 rounded shadow-sm">
+            <p class="font-semibold">{{ service.name }}</p>
+            <p class="text-sm text-gray-600">Team ID: {{ service.team_id }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>

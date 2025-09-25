@@ -102,7 +102,23 @@ class SystemServicer(system_pb2_grpc.SystemServicer):
     def DeleteTemplate(self, request, context): return self.template_servicer.Delete(request, context)
 
     # --- ServiceDependencyTemplate Methods ---
-    def CreateServiceDependencyTemplate(self, request, context): return self.sdt_servicer.Create(request, context)
+    def CreateServiceDependencyTemplate(self, request, context):
+        db = self.sdt_servicer._get_db()
+        try:
+            db_sdt = models.ServiceDependencyTemplate(
+                name=request.name,
+                template_id=request.template_id,
+                base_service_id=request.base_service_id,
+                dependent_service_id=request.dependent_service_id,
+                config_name=request.config_name
+            )
+            db.add(db_sdt)
+            db.commit()
+            db.refresh(db_sdt)
+            return converters.sdt_to_message(db_sdt)
+        finally:
+            db.close()
+
     def GetServiceDependencyTemplate(self, request, context): return self.sdt_servicer.Get(request, context)
     def ListServiceDependencyTemplates(self, request, context):
         db_items = self.sdt_servicer.List(request, context)

@@ -87,10 +87,13 @@ class ServiceDependencyTemplate(Base):
     name = Column(String, nullable=False) # e.g., "full access control"
     template_id = Column(Integer, ForeignKey('templates.id'))
     template = relationship("Template", back_populates="service_dependency_templates")
-    # This template would define what services and configs are needed.
-    # For simplicity, storing as strings. A real implementation might use foreign keys.
-    service_name = Column(String)
-    depends_on_service_name = Column(String)
+
+    base_service_id = Column(Integer, ForeignKey('services.id'))
+    base_service = relationship("Service", foreign_keys=[base_service_id])
+
+    dependent_service_id = Column(Integer, ForeignKey('services.id'))
+    dependent_service = relationship("Service", foreign_keys=[dependent_service_id])
+
     config_name = Column(String)
 
 class Task(Base):
