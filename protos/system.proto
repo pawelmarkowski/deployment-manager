@@ -1,0 +1,183 @@
+syntax = "proto3";
+
+package system;
+
+service System {
+    rpc CreateProduct(CreateProductRequest) returns (Product);
+    rpc GetProduct(GetProductRequest) returns (Product);
+    rpc CreateTeam(CreateTeamRequest) returns (Team);
+    rpc GetTeam(GetTeamRequest) returns (Team);
+    rpc CreateService(CreateServiceRequest) returns (Service);
+    rpc GetService(GetServiceRequest) returns (Service);
+    rpc CreateConfig(CreateConfigRequest) returns (Config);
+    rpc GetConfig(GetConfigRequest) returns (Config);
+    rpc CreateServiceDependency(CreateServiceDependencyRequest) returns (ServiceDependency);
+    rpc GetServiceDependency(GetServiceDependencyRequest) returns (ServiceDependency);
+    rpc CreateProject(CreateProjectRequest) returns (Project);
+    rpc GetProject(GetProjectRequest) returns (Project);
+    rpc CreateTemplate(CreateTemplateRequest) returns (Template);
+    rpc GetTemplate(GetTemplateRequest) returns (Template);
+    rpc CreateServiceDependencyTemplate(CreateServiceDependencyTemplateRequest) returns (ServiceDependencyTemplate);
+    rpc GetServiceDependencyTemplate(GetServiceDependencyTemplateRequest) returns (ServiceDependencyTemplate);
+    rpc CreateTask(CreateTaskRequest) returns (Task);
+    rpc GetTask(GetTaskRequest) returns (Task);
+}
+
+message Product {
+    int32 id = 1;
+    string name = 2;
+    repeated Team teams = 3;
+}
+
+message Team {
+    int32 id = 1;
+    string name = 2;
+    string url = 3;
+    int32 product_id = 4;
+    repeated Service services = 5;
+}
+
+message Service {
+    int32 id = 1;
+    string name = 2;
+    int32 team_id = 3;
+    repeated Config configs = 4;
+    repeated ServiceDependency dependencies = 5;
+}
+
+message Config {
+    int32 id = 1;
+    string name = 2;
+    string url = 3;
+    int32 service_id = 4;
+}
+
+message ServiceDependency {
+    int32 id = 1;
+    string name = 2;
+    string task_template = 3;
+    int32 project_id = 4;
+    int32 service_id = 5;
+    int32 depends_on_service_id = 6;
+    int32 config_id = 7;
+}
+
+message Project {
+    int32 id = 1;
+    string name = 2;
+    repeated ServiceDependency service_dependencies = 3;
+    repeated Template templates = 4;
+    repeated Task tasks = 5;
+}
+
+message Template {
+    int32 id = 1;
+    string name = 2;
+    repeated ServiceDependencyTemplate service_dependency_templates = 3;
+}
+
+message ServiceDependencyTemplate {
+    int32 id = 1;
+    string name = 2;
+    int32 template_id = 3;
+    string service_name = 4;
+    string depends_on_service_name = 5;
+    string config_name = 6;
+}
+
+message Task {
+    int32 id = 1;
+    string name = 2;
+    int32 project_id = 3;
+    int32 team_id = 4;
+}
+
+// Request and Response messages
+
+message CreateProductRequest {
+    string name = 1;
+}
+
+message GetProductRequest {
+    int32 id = 1;
+}
+
+message CreateTeamRequest {
+    string name = 1;
+    string url = 2;
+    int32 product_id = 3;
+}
+
+message GetTeamRequest {
+    int32 id = 1;
+}
+
+message CreateServiceRequest {
+    string name = 1;
+    int32 team_id = 2;
+}
+
+message GetServiceRequest {
+    int32 id = 1;
+}
+
+message CreateConfigRequest {
+    string name = 1;
+    string url = 2;
+    int32 service_id = 3;
+}
+
+message GetConfigRequest {
+    int32 id = 1;
+}
+
+message CreateServiceDependencyRequest {
+    string name = 1;
+    string task_template = 2;
+    int32 project_id = 3;
+    int32 service_id = 4;
+    int32 depends_on_service_id = 5;
+    int32 config_id = 6;
+}
+
+message GetServiceDependencyRequest {
+    int32 id = 1;
+}
+
+message CreateProjectRequest {
+    string name = 1;
+}
+
+message GetProjectRequest {
+    int32 id = 1;
+}
+
+message CreateTemplateRequest {
+    string name = 1;
+}
+
+message GetTemplateRequest {
+    int32 id = 1;
+}
+
+message CreateServiceDependencyTemplateRequest {
+    string name = 1;
+    int32 template_id = 2;
+    string service_name = 3;
+    string depends_on_service_name = 4;
+    string config_name = 5;
+}
+
+message GetServiceDependencyTemplateRequest {
+    int32 id = 1;
+}
+
+message CreateTaskRequest {
+    string name = 1;
+    int32 project_id = 2;
+    int32 team_id = 3;
+}
+
+message GetTaskRequest {
+    int32 id = 1;
+}

@@ -1,0 +1,9 @@
+sqlalchemy
+psycopg2-binary
+grpcio
+grpcio-tools
+opentelemetry-api
+opentelemetry-sdk
+opentelemetry-instrumentation-grpc
+pylint
+flake8
