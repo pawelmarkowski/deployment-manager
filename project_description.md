@@ -11,6 +11,9 @@
 * gRPC communication
 * Prometheus metrics
 
+# Expected execution:
+Set up the initial project structure, Implement the database models based on the class diagram, Develop the gRPC service definitions, write tests and run application. Establish the initial project structure with example data. Additionally, configure deployment using Tilt with the goal of deploying the complete environment (with databases etc.) on a private machine utilizing Kubernetes. Please provide the deployment configuration in Tilt format. Ensure that linters and recommended static code analysis tools are enabled within Tilt.
+
 # Backstage.io system alternative focused on deployment plan for project
 
 Our system is responsible for presenting real-world relations between system components. Due the fact that system consists of components provided by various product teams we distinguish 3 types of relations:
