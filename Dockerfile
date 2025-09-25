@@ -13,8 +13,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the rest of the application's code into the container at /app
 COPY . .
 
-# Generate gRPC code
-RUN python -m grpc_tools.protoc -I./protos --python_out=./src/generated --grpc_python_out=./src/generated ./protos/system.proto
+# Set the python path to include the app directory
+ENV PYTHONPATH /app
 
 # Make port 50051 available to the world outside this container
 EXPOSE 50051
