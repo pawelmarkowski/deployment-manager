@@ -19,8 +19,5 @@ RUN python -m grpc_tools.protoc -I./protos --python_out=./src/generated --grpc_p
 # Make port 50051 available to the world outside this container
 EXPOSE 50051
 
-# Define environment variable
-ENV DATABASE_URL="postgresql://user:password@postgres:5432/mydatabase"
-
 # Run main.py when the container launches
 CMD ["python", "main.py"]

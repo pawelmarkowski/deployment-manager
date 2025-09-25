@@ -1,3 +1,5 @@
+import os
+
 # Load extensions for additional functionality
 load('ext://k8s_yaml', 'k8s_yaml')
 load('ext://docker_build', 'docker_build')
@@ -30,6 +32,13 @@ docker_build(
 )
 
 # --- Kubernetes Resources ---
+# Check for the local password file and create it if it doesn't exist
+if not os.path.exists('postgres-password.txt'):
+    fail("File 'postgres-password.txt' not found. Please create it with your desired database password.")
+
+# Deploy the PostgreSQL secret, injecting the password from the local file
+k8s_yaml(k8s_yaml('k8s/secrets.yaml').replace('password: ""', 'password: %s' % open('postgres-password.txt').read().strip()))
+
 # Deploy the PostgreSQL database
 k8s_yaml('k8s/postgres.yaml')
 k8s_resource(DB_NAME, port_forwards='5432:5432')
@@ -37,6 +46,10 @@ k8s_resource(DB_NAME, port_forwards='5432:5432')
 # Deploy the Python application
 k8s_yaml('k8s/app.yaml')
 k8s_resource(APP_NAME, port_forwards='50051:50051')
+
+# Deploy the gRPC UI
+k8s_yaml('k8s/grpcui.yaml')
+k8s_resource('grpcui', port_forwards='8080:8080')
 
 
 # --- Local Resources (Tasks) ---
@@ -67,6 +80,7 @@ update_settings(
     ui_groups=[
         {'name': 'linters', 'resources': ['lint:flake8', 'lint:pylint']},
         {'name': 'app', 'resources': [APP_NAME]},
-        {'name': 'db', 'resources': [DB_NAME, 'db:seed']}
+        {'name': 'db', 'resources': [DB_NAME, 'db:seed']},
+        {'name': 'ui', 'resources': ['grpcui']}
     ]
 )

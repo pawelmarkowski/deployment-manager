@@ -1,0 +1,34 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: grpcui
+spec:
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: grpcui
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grpcui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grpcui
+  template:
+    metadata:
+      labels:
+        app: grpcui
+    spec:
+      containers:
+        - name: grpcui
+          image: fullstorydev/grpcui:latest
+          args:
+            - "-plaintext"
+            - "python-app:50051"
+          ports:
+            - containerPort: 8080

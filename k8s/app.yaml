@@ -29,5 +29,10 @@ spec:
           ports:
             - containerPort: 50051
           env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: password
             - name: DATABASE_URL
-              value: "postgresql://user:password@postgres:5432/mydatabase"
+              value: "postgresql://user:$(POSTGRES_PASSWORD)@postgres:5432/mydatabase"
