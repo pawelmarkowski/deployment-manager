@@ -48,14 +48,6 @@ k8s_resource('grpcui', port_forwards='8080:8080')
 
 
 # --- Local Resources (Tasks) ---
-# Command to seed the database. This runs once the DB is ready.
-local_resource(
-    'db:seed',
-    cmd='venv/bin/python src/seed.py',
-    deps=['src/seed.py', 'src/models.py', 'venv'],
-    resource_deps=[DB_NAME]
-)
-
 # Command to run flake8 linter
 local_resource(
     'lint:flake8',

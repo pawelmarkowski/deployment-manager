@@ -3,7 +3,8 @@
 import grpc
 import warnings
 
-from . import system_pb2 as system__pb2
+from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
+from src.generated import system_pb2 as system__pb2
 
 GRPC_GENERATED_VERSION = '1.75.0'
 GRPC_VERSION = grpc.__version__
@@ -44,6 +45,16 @@ class SystemStub(object):
                 request_serializer=system__pb2.GetProductRequest.SerializeToString,
                 response_deserializer=system__pb2.Product.FromString,
                 _registered_method=True)
+        self.ListProducts = channel.unary_unary(
+                '/system.System/ListProducts',
+                request_serializer=system__pb2.ListProductsRequest.SerializeToString,
+                response_deserializer=system__pb2.ListProductsResponse.FromString,
+                _registered_method=True)
+        self.DeleteProduct = channel.unary_unary(
+                '/system.System/DeleteProduct',
+                request_serializer=system__pb2.DeleteProductRequest.SerializeToString,
+                response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+                _registered_method=True)
         self.CreateTeam = channel.unary_unary(
                 '/system.System/CreateTeam',
                 request_serializer=system__pb2.CreateTeamRequest.SerializeToString,
@@ -53,6 +64,16 @@ class SystemStub(object):
                 '/system.System/GetTeam',
                 request_serializer=system__pb2.GetTeamRequest.SerializeToString,
                 response_deserializer=system__pb2.Team.FromString,
+                _registered_method=True)
+        self.ListTeams = channel.unary_unary(
+                '/system.System/ListTeams',
+                request_serializer=system__pb2.ListTeamsRequest.SerializeToString,
+                response_deserializer=system__pb2.ListTeamsResponse.FromString,
+                _registered_method=True)
+        self.DeleteTeam = channel.unary_unary(
+                '/system.System/DeleteTeam',
+                request_serializer=system__pb2.DeleteTeamRequest.SerializeToString,
+                response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
                 _registered_method=True)
         self.CreateService = channel.unary_unary(
                 '/system.System/CreateService',
@@ -64,6 +85,16 @@ class SystemStub(object):
                 request_serializer=system__pb2.GetServiceRequest.SerializeToString,
                 response_deserializer=system__pb2.Service.FromString,
                 _registered_method=True)
+        self.ListServices = channel.unary_unary(
+                '/system.System/ListServices',
+                request_serializer=system__pb2.ListServicesRequest.SerializeToString,
+                response_deserializer=system__pb2.ListServicesResponse.FromString,
+                _registered_method=True)
+        self.DeleteService = channel.unary_unary(
+                '/system.System/DeleteService',
+                request_serializer=system__pb2.DeleteServiceRequest.SerializeToString,
+                response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+                _registered_method=True)
         self.CreateConfig = channel.unary_unary(
                 '/system.System/CreateConfig',
                 request_serializer=system__pb2.CreateConfigRequest.SerializeToString,
@@ -73,6 +104,16 @@ class SystemStub(object):
                 '/system.System/GetConfig',
                 request_serializer=system__pb2.GetConfigRequest.SerializeToString,
                 response_deserializer=system__pb2.Config.FromString,
+                _registered_method=True)
+        self.ListConfigs = channel.unary_unary(
+                '/system.System/ListConfigs',
+                request_serializer=system__pb2.ListConfigsRequest.SerializeToString,
+                response_deserializer=system__pb2.ListConfigsResponse.FromString,
+                _registered_method=True)
+        self.DeleteConfig = channel.unary_unary(
+                '/system.System/DeleteConfig',
+                request_serializer=system__pb2.DeleteConfigRequest.SerializeToString,
+                response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
                 _registered_method=True)
         self.CreateServiceDependency = channel.unary_unary(
                 '/system.System/CreateServiceDependency',
@@ -84,6 +125,16 @@ class SystemStub(object):
                 request_serializer=system__pb2.GetServiceDependencyRequest.SerializeToString,
                 response_deserializer=system__pb2.ServiceDependency.FromString,
                 _registered_method=True)
+        self.ListServiceDependencies = channel.unary_unary(
+                '/system.System/ListServiceDependencies',
+                request_serializer=system__pb2.ListServiceDependenciesRequest.SerializeToString,
+                response_deserializer=system__pb2.ListServiceDependenciesResponse.FromString,
+                _registered_method=True)
+        self.DeleteServiceDependency = channel.unary_unary(
+                '/system.System/DeleteServiceDependency',
+                request_serializer=system__pb2.DeleteServiceDependencyRequest.SerializeToString,
+                response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+                _registered_method=True)
         self.CreateProject = channel.unary_unary(
                 '/system.System/CreateProject',
                 request_serializer=system__pb2.CreateProjectRequest.SerializeToString,
@@ -93,6 +144,16 @@ class SystemStub(object):
                 '/system.System/GetProject',
                 request_serializer=system__pb2.GetProjectRequest.SerializeToString,
                 response_deserializer=system__pb2.Project.FromString,
+                _registered_method=True)
+        self.ListProjects = channel.unary_unary(
+                '/system.System/ListProjects',
+                request_serializer=system__pb2.ListProjectsRequest.SerializeToString,
+                response_deserializer=system__pb2.ListProjectsResponse.FromString,
+                _registered_method=True)
+        self.DeleteProject = channel.unary_unary(
+                '/system.System/DeleteProject',
+                request_serializer=system__pb2.DeleteProjectRequest.SerializeToString,
+                response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
                 _registered_method=True)
         self.CreateTemplate = channel.unary_unary(
                 '/system.System/CreateTemplate',
@@ -104,6 +165,16 @@ class SystemStub(object):
                 request_serializer=system__pb2.GetTemplateRequest.SerializeToString,
                 response_deserializer=system__pb2.Template.FromString,
                 _registered_method=True)
+        self.ListTemplates = channel.unary_unary(
+                '/system.System/ListTemplates',
+                request_serializer=system__pb2.ListTemplatesRequest.SerializeToString,
+                response_deserializer=system__pb2.ListTemplatesResponse.FromString,
+                _registered_method=True)
+        self.DeleteTemplate = channel.unary_unary(
+                '/system.System/DeleteTemplate',
+                request_serializer=system__pb2.DeleteTemplateRequest.SerializeToString,
+                response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+                _registered_method=True)
         self.CreateServiceDependencyTemplate = channel.unary_unary(
                 '/system.System/CreateServiceDependencyTemplate',
                 request_serializer=system__pb2.CreateServiceDependencyTemplateRequest.SerializeToString,
@@ -113,6 +184,16 @@ class SystemStub(object):
                 '/system.System/GetServiceDependencyTemplate',
                 request_serializer=system__pb2.GetServiceDependencyTemplateRequest.SerializeToString,
                 response_deserializer=system__pb2.ServiceDependencyTemplate.FromString,
+                _registered_method=True)
+        self.ListServiceDependencyTemplates = channel.unary_unary(
+                '/system.System/ListServiceDependencyTemplates',
+                request_serializer=system__pb2.ListServiceDependencyTemplatesRequest.SerializeToString,
+                response_deserializer=system__pb2.ListServiceDependencyTemplatesResponse.FromString,
+                _registered_method=True)
+        self.DeleteServiceDependencyTemplate = channel.unary_unary(
+                '/system.System/DeleteServiceDependencyTemplate',
+                request_serializer=system__pb2.DeleteServiceDependencyTemplateRequest.SerializeToString,
+                response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
                 _registered_method=True)
         self.CreateTask = channel.unary_unary(
                 '/system.System/CreateTask',
@@ -124,13 +205,24 @@ class SystemStub(object):
                 request_serializer=system__pb2.GetTaskRequest.SerializeToString,
                 response_deserializer=system__pb2.Task.FromString,
                 _registered_method=True)
+        self.ListTasks = channel.unary_unary(
+                '/system.System/ListTasks',
+                request_serializer=system__pb2.ListTasksRequest.SerializeToString,
+                response_deserializer=system__pb2.ListTasksResponse.FromString,
+                _registered_method=True)
+        self.DeleteTask = channel.unary_unary(
+                '/system.System/DeleteTask',
+                request_serializer=system__pb2.DeleteTaskRequest.SerializeToString,
+                response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+                _registered_method=True)
 
 
 class SystemServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def CreateProduct(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """Product methods
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -141,8 +233,21 @@ class SystemServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def CreateTeam(self, request, context):
+    def ListProducts(self, request, context):
         """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DeleteProduct(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def CreateTeam(self, request, context):
+        """Team methods
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -153,8 +258,21 @@ class SystemServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def CreateService(self, request, context):
+    def ListTeams(self, request, context):
         """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DeleteTeam(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def CreateService(self, request, context):
+        """Service methods
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -165,8 +283,21 @@ class SystemServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def CreateConfig(self, request, context):
+    def ListServices(self, request, context):
         """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DeleteService(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def CreateConfig(self, request, context):
+        """Config methods
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -177,8 +308,21 @@ class SystemServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def CreateServiceDependency(self, request, context):
+    def ListConfigs(self, request, context):
         """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DeleteConfig(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def CreateServiceDependency(self, request, context):
+        """ServiceDependency methods
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -189,8 +333,21 @@ class SystemServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def CreateProject(self, request, context):
+    def ListServiceDependencies(self, request, context):
         """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DeleteServiceDependency(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def CreateProject(self, request, context):
+        """Project methods
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -201,8 +358,21 @@ class SystemServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def CreateTemplate(self, request, context):
+    def ListProjects(self, request, context):
         """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DeleteProject(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def CreateTemplate(self, request, context):
+        """Template methods
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -213,8 +383,21 @@ class SystemServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def CreateServiceDependencyTemplate(self, request, context):
+    def ListTemplates(self, request, context):
         """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DeleteTemplate(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def CreateServiceDependencyTemplate(self, request, context):
+        """ServiceDependencyTemplate methods
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -225,13 +408,38 @@ class SystemServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def CreateTask(self, request, context):
+    def ListServiceDependencyTemplates(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def DeleteServiceDependencyTemplate(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def CreateTask(self, request, context):
+        """Task methods
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def GetTask(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def ListTasks(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def DeleteTask(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -250,6 +458,16 @@ def add_SystemServicer_to_server(servicer, server):
                     request_deserializer=system__pb2.GetProductRequest.FromString,
                     response_serializer=system__pb2.Product.SerializeToString,
             ),
+            'ListProducts': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListProducts,
+                    request_deserializer=system__pb2.ListProductsRequest.FromString,
+                    response_serializer=system__pb2.ListProductsResponse.SerializeToString,
+            ),
+            'DeleteProduct': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteProduct,
+                    request_deserializer=system__pb2.DeleteProductRequest.FromString,
+                    response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+            ),
             'CreateTeam': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateTeam,
                     request_deserializer=system__pb2.CreateTeamRequest.FromString,
@@ -259,6 +477,16 @@ def add_SystemServicer_to_server(servicer, server):
                     servicer.GetTeam,
                     request_deserializer=system__pb2.GetTeamRequest.FromString,
                     response_serializer=system__pb2.Team.SerializeToString,
+            ),
+            'ListTeams': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListTeams,
+                    request_deserializer=system__pb2.ListTeamsRequest.FromString,
+                    response_serializer=system__pb2.ListTeamsResponse.SerializeToString,
+            ),
+            'DeleteTeam': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteTeam,
+                    request_deserializer=system__pb2.DeleteTeamRequest.FromString,
+                    response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
             ),
             'CreateService': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateService,
@@ -270,6 +498,16 @@ def add_SystemServicer_to_server(servicer, server):
                     request_deserializer=system__pb2.GetServiceRequest.FromString,
                     response_serializer=system__pb2.Service.SerializeToString,
             ),
+            'ListServices': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListServices,
+                    request_deserializer=system__pb2.ListServicesRequest.FromString,
+                    response_serializer=system__pb2.ListServicesResponse.SerializeToString,
+            ),
+            'DeleteService': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteService,
+                    request_deserializer=system__pb2.DeleteServiceRequest.FromString,
+                    response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+            ),
             'CreateConfig': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateConfig,
                     request_deserializer=system__pb2.CreateConfigRequest.FromString,
@@ -279,6 +517,16 @@ def add_SystemServicer_to_server(servicer, server):
                     servicer.GetConfig,
                     request_deserializer=system__pb2.GetConfigRequest.FromString,
                     response_serializer=system__pb2.Config.SerializeToString,
+            ),
+            'ListConfigs': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListConfigs,
+                    request_deserializer=system__pb2.ListConfigsRequest.FromString,
+                    response_serializer=system__pb2.ListConfigsResponse.SerializeToString,
+            ),
+            'DeleteConfig': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteConfig,
+                    request_deserializer=system__pb2.DeleteConfigRequest.FromString,
+                    response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
             ),
             'CreateServiceDependency': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateServiceDependency,
@@ -290,6 +538,16 @@ def add_SystemServicer_to_server(servicer, server):
                     request_deserializer=system__pb2.GetServiceDependencyRequest.FromString,
                     response_serializer=system__pb2.ServiceDependency.SerializeToString,
             ),
+            'ListServiceDependencies': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListServiceDependencies,
+                    request_deserializer=system__pb2.ListServiceDependenciesRequest.FromString,
+                    response_serializer=system__pb2.ListServiceDependenciesResponse.SerializeToString,
+            ),
+            'DeleteServiceDependency': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteServiceDependency,
+                    request_deserializer=system__pb2.DeleteServiceDependencyRequest.FromString,
+                    response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+            ),
             'CreateProject': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateProject,
                     request_deserializer=system__pb2.CreateProjectRequest.FromString,
@@ -299,6 +557,16 @@ def add_SystemServicer_to_server(servicer, server):
                     servicer.GetProject,
                     request_deserializer=system__pb2.GetProjectRequest.FromString,
                     response_serializer=system__pb2.Project.SerializeToString,
+            ),
+            'ListProjects': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListProjects,
+                    request_deserializer=system__pb2.ListProjectsRequest.FromString,
+                    response_serializer=system__pb2.ListProjectsResponse.SerializeToString,
+            ),
+            'DeleteProject': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteProject,
+                    request_deserializer=system__pb2.DeleteProjectRequest.FromString,
+                    response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
             ),
             'CreateTemplate': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateTemplate,
@@ -310,6 +578,16 @@ def add_SystemServicer_to_server(servicer, server):
                     request_deserializer=system__pb2.GetTemplateRequest.FromString,
                     response_serializer=system__pb2.Template.SerializeToString,
             ),
+            'ListTemplates': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListTemplates,
+                    request_deserializer=system__pb2.ListTemplatesRequest.FromString,
+                    response_serializer=system__pb2.ListTemplatesResponse.SerializeToString,
+            ),
+            'DeleteTemplate': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteTemplate,
+                    request_deserializer=system__pb2.DeleteTemplateRequest.FromString,
+                    response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+            ),
             'CreateServiceDependencyTemplate': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateServiceDependencyTemplate,
                     request_deserializer=system__pb2.CreateServiceDependencyTemplateRequest.FromString,
@@ -320,6 +598,16 @@ def add_SystemServicer_to_server(servicer, server):
                     request_deserializer=system__pb2.GetServiceDependencyTemplateRequest.FromString,
                     response_serializer=system__pb2.ServiceDependencyTemplate.SerializeToString,
             ),
+            'ListServiceDependencyTemplates': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListServiceDependencyTemplates,
+                    request_deserializer=system__pb2.ListServiceDependencyTemplatesRequest.FromString,
+                    response_serializer=system__pb2.ListServiceDependencyTemplatesResponse.SerializeToString,
+            ),
+            'DeleteServiceDependencyTemplate': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteServiceDependencyTemplate,
+                    request_deserializer=system__pb2.DeleteServiceDependencyTemplateRequest.FromString,
+                    response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+            ),
             'CreateTask': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateTask,
                     request_deserializer=system__pb2.CreateTaskRequest.FromString,
@@ -329,6 +617,16 @@ def add_SystemServicer_to_server(servicer, server):
                     servicer.GetTask,
                     request_deserializer=system__pb2.GetTaskRequest.FromString,
                     response_serializer=system__pb2.Task.SerializeToString,
+            ),
+            'ListTasks': grpc.unary_unary_rpc_method_handler(
+                    servicer.ListTasks,
+                    request_deserializer=system__pb2.ListTasksRequest.FromString,
+                    response_serializer=system__pb2.ListTasksResponse.SerializeToString,
+            ),
+            'DeleteTask': grpc.unary_unary_rpc_method_handler(
+                    servicer.DeleteTask,
+                    request_deserializer=system__pb2.DeleteTaskRequest.FromString,
+                    response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -396,6 +694,60 @@ class System(object):
             _registered_method=True)
 
     @staticmethod
+    def ListProducts(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/system.System/ListProducts',
+            system__pb2.ListProductsRequest.SerializeToString,
+            system__pb2.ListProductsResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DeleteProduct(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/system.System/DeleteProduct',
+            system__pb2.DeleteProductRequest.SerializeToString,
+            google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
     def CreateTeam(request,
             target,
             options=(),
@@ -439,6 +791,60 @@ class System(object):
             '/system.System/GetTeam',
             system__pb2.GetTeamRequest.SerializeToString,
             system__pb2.Team.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListTeams(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/system.System/ListTeams',
+            system__pb2.ListTeamsRequest.SerializeToString,
+            system__pb2.ListTeamsResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DeleteTeam(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/system.System/DeleteTeam',
+            system__pb2.DeleteTeamRequest.SerializeToString,
+            google_dot_protobuf_dot_empty__pb2.Empty.FromString,
             options,
             channel_credentials,
             insecure,
@@ -504,6 +910,60 @@ class System(object):
             _registered_method=True)
 
     @staticmethod
+    def ListServices(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/system.System/ListServices',
+            system__pb2.ListServicesRequest.SerializeToString,
+            system__pb2.ListServicesResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DeleteService(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/system.System/DeleteService',
+            system__pb2.DeleteServiceRequest.SerializeToString,
+            google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
     def CreateConfig(request,
             target,
             options=(),
@@ -547,6 +1007,60 @@ class System(object):
             '/system.System/GetConfig',
             system__pb2.GetConfigRequest.SerializeToString,
             system__pb2.Config.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListConfigs(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/system.System/ListConfigs',
+            system__pb2.ListConfigsRequest.SerializeToString,
+            system__pb2.ListConfigsResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DeleteConfig(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/system.System/DeleteConfig',
+            system__pb2.DeleteConfigRequest.SerializeToString,
+            google_dot_protobuf_dot_empty__pb2.Empty.FromString,
             options,
             channel_credentials,
             insecure,
@@ -612,6 +1126,60 @@ class System(object):
             _registered_method=True)
 
     @staticmethod
+    def ListServiceDependencies(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/system.System/ListServiceDependencies',
+            system__pb2.ListServiceDependenciesRequest.SerializeToString,
+            system__pb2.ListServiceDependenciesResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DeleteServiceDependency(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/system.System/DeleteServiceDependency',
+            system__pb2.DeleteServiceDependencyRequest.SerializeToString,
+            google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
     def CreateProject(request,
             target,
             options=(),
@@ -655,6 +1223,60 @@ class System(object):
             '/system.System/GetProject',
             system__pb2.GetProjectRequest.SerializeToString,
             system__pb2.Project.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListProjects(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/system.System/ListProjects',
+            system__pb2.ListProjectsRequest.SerializeToString,
+            system__pb2.ListProjectsResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DeleteProject(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/system.System/DeleteProject',
+            system__pb2.DeleteProjectRequest.SerializeToString,
+            google_dot_protobuf_dot_empty__pb2.Empty.FromString,
             options,
             channel_credentials,
             insecure,
@@ -720,6 +1342,60 @@ class System(object):
             _registered_method=True)
 
     @staticmethod
+    def ListTemplates(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/system.System/ListTemplates',
+            system__pb2.ListTemplatesRequest.SerializeToString,
+            system__pb2.ListTemplatesResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DeleteTemplate(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/system.System/DeleteTemplate',
+            system__pb2.DeleteTemplateRequest.SerializeToString,
+            google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
     def CreateServiceDependencyTemplate(request,
             target,
             options=(),
@@ -774,6 +1450,60 @@ class System(object):
             _registered_method=True)
 
     @staticmethod
+    def ListServiceDependencyTemplates(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/system.System/ListServiceDependencyTemplates',
+            system__pb2.ListServiceDependencyTemplatesRequest.SerializeToString,
+            system__pb2.ListServiceDependencyTemplatesResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DeleteServiceDependencyTemplate(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/system.System/DeleteServiceDependencyTemplate',
+            system__pb2.DeleteServiceDependencyTemplateRequest.SerializeToString,
+            google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
     def CreateTask(request,
             target,
             options=(),
@@ -817,6 +1547,60 @@ class System(object):
             '/system.System/GetTask',
             system__pb2.GetTaskRequest.SerializeToString,
             system__pb2.Task.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def ListTasks(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/system.System/ListTasks',
+            system__pb2.ListTasksRequest.SerializeToString,
+            system__pb2.ListTasksResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def DeleteTask(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/system.System/DeleteTask',
+            system__pb2.DeleteTaskRequest.SerializeToString,
+            google_dot_protobuf_dot_empty__pb2.Empty.FromString,
             options,
             channel_credentials,
             insecure,

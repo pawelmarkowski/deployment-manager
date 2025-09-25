@@ -1,251 +1,126 @@
 from concurrent import futures
 import grpc
 from grpc_reflection.v1alpha import reflection
-from src.generated import system_pb2
-from src.generated import system_pb2_grpc
+from google.protobuf import empty_pb2
+from sqlalchemy.orm import subqueryload
+
+from src.generated import system_pb2, system_pb2_grpc
 from src.database import SessionLocal
-from src import models
+from src import models, converters
+from src.generics import GenericServicer
+
+class ProductServicer(GenericServicer):
+    def _get_load_options(self):
+        return [subqueryload(models.Product.teams).subqueryload(models.Team.services)]
+
+class TeamServicer(GenericServicer):
+    def _get_load_options(self):
+        return [subqueryload(models.Team.services).subqueryload(models.Service.configs)]
+
+class ServiceServicer(GenericServicer):
+    def _get_load_options(self):
+        return [subqueryload(models.Service.configs), subqueryload(models.Service.dependencies)]
+
+class ProjectServicer(GenericServicer):
+    def _get_load_options(self):
+        return [
+            subqueryload(models.Project.service_dependencies),
+            subqueryload(models.Project.templates).subqueryload(models.Template.service_dependency_templates),
+            subqueryload(models.Project.tasks)
+        ]
+
+class TemplateServicer(GenericServicer):
+    def _get_load_options(self):
+        return [subqueryload(models.Template.service_dependency_templates)]
 
 class SystemServicer(system_pb2_grpc.SystemServicer):
     def __init__(self, db_session_factory=SessionLocal):
-        self.db_session_factory = db_session_factory
+        self.product_servicer = ProductServicer(models.Product, converters.product_to_message, db_session_factory)
+        self.team_servicer = TeamServicer(models.Team, converters.team_to_message, db_session_factory)
+        self.service_servicer = ServiceServicer(models.Service, converters.service_to_message, db_session_factory)
+        self.config_servicer = GenericServicer(models.Config, converters.config_to_message, db_session_factory)
+        self.sd_servicer = GenericServicer(models.ServiceDependency, converters.service_dependency_to_message, db_session_factory)
+        self.project_servicer = ProjectServicer(models.Project, converters.project_to_message, db_session_factory)
+        self.template_servicer = TemplateServicer(models.Template, converters.template_to_message, db_session_factory)
+        self.sdt_servicer = GenericServicer(models.ServiceDependencyTemplate, converters.sdt_to_message, db_session_factory)
+        self.task_servicer = GenericServicer(models.Task, converters.task_to_message, db_session_factory)
 
-    def _get_db(self):
-        return self.db_session_factory()
+    # --- Product Methods ---
+    def CreateProduct(self, request, context): return self.product_servicer.Create(request, context)
+    def GetProduct(self, request, context): return self.product_servicer.Get(request, context)
+    def ListProducts(self, request, context):
+        db_items = self.product_servicer.List(request, context)
+        return system_pb2.ListProductsResponse(products=db_items)
+    def DeleteProduct(self, request, context): return self.product_servicer.Delete(request, context)
 
-    def CreateProduct(self, request, context):
-        db = self._get_db()
-        try:
-            db_product = models.Product(name=request.name)
-            db.add(db_product)
-            db.commit()
-            db.refresh(db_product)
-            return system_pb2.Product(id=db_product.id, name=db_product.name)
-        finally:
-            db.close()
+    # --- Team Methods ---
+    def CreateTeam(self, request, context): return self.team_servicer.Create(request, context)
+    def GetTeam(self, request, context): return self.team_servicer.Get(request, context)
+    def ListTeams(self, request, context):
+        db_items = self.team_servicer.List(request, context)
+        return system_pb2.ListTeamsResponse(teams=db_items)
+    def DeleteTeam(self, request, context): return self.team_servicer.Delete(request, context)
 
-    def GetProduct(self, request, context):
-        db = self._get_db()
-        try:
-            db_product = db.query(models.Product).filter(models.Product.id == request.id).first()
-            if db_product is None:
-                context.set_code(grpc.StatusCode.NOT_FOUND)
-                context.set_details('Product not found')
-                return system_pb2.Product()
-            return system_pb2.Product(id=db_product.id, name=db_product.name)
-        finally:
-            db.close()
+    # --- Service Methods ---
+    def CreateService(self, request, context): return self.service_servicer.Create(request, context)
+    def GetService(self, request, context): return self.service_servicer.Get(request, context)
+    def ListServices(self, request, context):
+        db_items = self.service_servicer.List(request, context)
+        return system_pb2.ListServicesResponse(services=db_items)
+    def DeleteService(self, request, context): return self.service_servicer.Delete(request, context)
 
-    def CreateTeam(self, request, context):
-        db = self._get_db()
-        try:
-            db_team = models.Team(name=request.name, url=request.url, product_id=request.product_id)
-            db.add(db_team)
-            db.commit()
-            db.refresh(db_team)
-            return system_pb2.Team(id=db_team.id, name=db_team.name, url=db_team.url, product_id=db_team.product_id)
-        finally:
-            db.close()
+    # --- Config Methods ---
+    def CreateConfig(self, request, context): return self.config_servicer.Create(request, context)
+    def GetConfig(self, request, context): return self.config_servicer.Get(request, context)
+    def ListConfigs(self, request, context):
+        db_items = self.config_servicer.List(request, context)
+        return system_pb2.ListConfigsResponse(configs=db_items)
+    def DeleteConfig(self, request, context): return self.config_servicer.Delete(request, context)
 
-    def GetTeam(self, request, context):
-        db = self._get_db()
-        try:
-            db_team = db.query(models.Team).filter(models.Team.id == request.id).first()
-            if db_team is None:
-                context.set_code(grpc.StatusCode.NOT_FOUND)
-                context.set_details('Team not found')
-                return system_pb2.Team()
-            return system_pb2.Team(id=db_team.id, name=db_team.name, url=db_team.url, product_id=db_team.product_id)
-        finally:
-            db.close()
+    # --- ServiceDependency Methods ---
+    def CreateServiceDependency(self, request, context): return self.sd_servicer.Create(request, context)
+    def GetServiceDependency(self, request, context): return self.sd_servicer.Get(request, context)
+    def ListServiceDependencies(self, request, context):
+        db_items = self.sd_servicer.List(request, context)
+        return system_pb2.ListServiceDependenciesResponse(service_dependencies=db_items)
+    def DeleteServiceDependency(self, request, context): return self.sd_servicer.Delete(request, context)
 
-    def CreateService(self, request, context):
-        db = self._get_db()
-        try:
-            db_service = models.Service(name=request.name, team_id=request.team_id)
-            db.add(db_service)
-            db.commit()
-            db.refresh(db_service)
-            return system_pb2.Service(id=db_service.id, name=db_service.name, team_id=db_service.team_id)
-        finally:
-            db.close()
+    # --- Project Methods ---
+    def CreateProject(self, request, context): return self.project_servicer.Create(request, context)
+    def GetProject(self, request, context): return self.project_servicer.Get(request, context)
+    def ListProjects(self, request, context):
+        db_items = self.project_servicer.List(request, context)
+        return system_pb2.ListProjectsResponse(projects=db_items)
+    def DeleteProject(self, request, context): return self.project_servicer.Delete(request, context)
 
-    def GetService(self, request, context):
-        db = self._get_db()
-        try:
-            db_service = db.query(models.Service).filter(models.Service.id == request.id).first()
-            if db_service is None:
-                context.set_code(grpc.StatusCode.NOT_FOUND)
-                context.set_details('Service not found')
-                return system_pb2.Service()
-            return system_pb2.Service(id=db_service.id, name=db_service.name, team_id=db_service.team_id)
-        finally:
-            db.close()
+    # --- Template Methods ---
+    def CreateTemplate(self, request, context): return self.template_servicer.Create(request, context)
+    def GetTemplate(self, request, context): return self.template_servicer.Get(request, context)
+    def ListTemplates(self, request, context):
+        db_items = self.template_servicer.List(request, context)
+        return system_pb2.ListTemplatesResponse(templates=db_items)
+    def DeleteTemplate(self, request, context): return self.template_servicer.Delete(request, context)
 
-    def CreateConfig(self, request, context):
-        db = self._get_db()
-        try:
-            db_config = models.Config(name=request.name, url=request.url, service_id=request.service_id)
-            db.add(db_config)
-            db.commit()
-            db.refresh(db_config)
-            return system_pb2.Config(id=db_config.id, name=db_config.name, url=db_config.url, service_id=db_config.service_id)
-        finally:
-            db.close()
+    # --- ServiceDependencyTemplate Methods ---
+    def CreateServiceDependencyTemplate(self, request, context): return self.sdt_servicer.Create(request, context)
+    def GetServiceDependencyTemplate(self, request, context): return self.sdt_servicer.Get(request, context)
+    def ListServiceDependencyTemplates(self, request, context):
+        db_items = self.sdt_servicer.List(request, context)
+        return system_pb2.ListServiceDependencyTemplatesResponse(service_dependency_templates=db_items)
+    def DeleteServiceDependencyTemplate(self, request, context): return self.sdt_servicer.Delete(request, context)
 
-    def GetConfig(self, request, context):
-        db = self._get_db()
-        try:
-            db_config = db.query(models.Config).filter(models.Config.id == request.id).first()
-            if db_config is None:
-                context.set_code(grpc.StatusCode.NOT_FOUND)
-                context.set_details('Config not found')
-                return system_pb2.Config()
-            return system_pb2.Config(id=db_config.id, name=db_config.name, url=db_config.url, service_id=db_config.service_id)
-        finally:
-            db.close()
-
-    def CreateServiceDependency(self, request, context):
-        db = self._get_db()
-        try:
-            db_sd = models.ServiceDependency(
-                name=request.name, task_template=request.task_template, project_id=request.project_id,
-                service_id=request.service_id, depends_on_service_id=request.depends_on_service_id,
-                config_id=request.config_id
-            )
-            db.add(db_sd)
-            db.commit()
-            db.refresh(db_sd)
-            return system_pb2.ServiceDependency(
-                id=db_sd.id, name=db_sd.name, task_template=db_sd.task_template, project_id=db_sd.project_id,
-                service_id=db_sd.service_id, depends_on_service_id=db_sd.depends_on_service_id,
-                config_id=db_sd.config_id
-            )
-        finally:
-            db.close()
-
-    def GetServiceDependency(self, request, context):
-        db = self._get_db()
-        try:
-            db_sd = db.query(models.ServiceDependency).filter(models.ServiceDependency.id == request.id).first()
-            if db_sd is None:
-                context.set_code(grpc.StatusCode.NOT_FOUND)
-                context.set_details('ServiceDependency not found')
-                return system_pb2.ServiceDependency()
-            return system_pb2.ServiceDependency(
-                id=db_sd.id, name=db_sd.name, task_template=db_sd.task_template, project_id=db_sd.project_id,
-                service_id=db_sd.service_id, depends_on_service_id=db_sd.depends_on_service_id,
-                config_id=db_sd.config_id
-            )
-        finally:
-            db.close()
-
-    def CreateProject(self, request, context):
-        db = self._get_db()
-        try:
-            db_project = models.Project(name=request.name)
-            db.add(db_project)
-            db.commit()
-            db.refresh(db_project)
-            return system_pb2.Project(id=db_project.id, name=db_project.name)
-        finally:
-            db.close()
-
-    def GetProject(self, request, context):
-        db = self._get_db()
-        try:
-            db_project = db.query(models.Project).filter(models.Project.id == request.id).first()
-            if db_project is None:
-                context.set_code(grpc.StatusCode.NOT_FOUND)
-                context.set_details('Project not found')
-                return system_pb2.Project()
-            return system_pb2.Project(id=db_project.id, name=db_project.name)
-        finally:
-            db.close()
-
-    def CreateTemplate(self, request, context):
-        db = self._get_db()
-        try:
-            db_template = models.Template(name=request.name)
-            db.add(db_template)
-            db.commit()
-            db.refresh(db_template)
-            return system_pb2.Template(id=db_template.id, name=db_template.name)
-        finally:
-            db.close()
-
-    def GetTemplate(self, request, context):
-        db = self._get_db()
-        try:
-            db_template = db.query(models.Template).filter(models.Template.id == request.id).first()
-            if db_template is None:
-                context.set_code(grpc.StatusCode.NOT_FOUND)
-                context.set_details('Template not found')
-                return system_pb2.Template()
-            return system_pb2.Template(id=db_template.id, name=db_template.name)
-        finally:
-            db.close()
-
-    def CreateServiceDependencyTemplate(self, request, context):
-        db = self._get_db()
-        try:
-            db_sdt = models.ServiceDependencyTemplate(
-                name=request.name, template_id=request.template_id, service_name=request.service_name,
-                depends_on_service_name=request.depends_on_service_name, config_name=request.config_name
-            )
-            db.add(db_sdt)
-            db.commit()
-            db.refresh(db_sdt)
-            return system_pb2.ServiceDependencyTemplate(
-                id=db_sdt.id, name=db_sdt.name, template_id=db_sdt.template_id, service_name=db_sdt.service_name,
-                depends_on_service_name=db_sdt.depends_on_service_name, config_name=db_sdt.config_name
-            )
-        finally:
-            db.close()
-
-    def GetServiceDependencyTemplate(self, request, context):
-        db = self._get_db()
-        try:
-            db_sdt = db.query(models.ServiceDependencyTemplate).filter(models.ServiceDependencyTemplate.id == request.id).first()
-            if db_sdt is None:
-                context.set_code(grpc.StatusCode.NOT_FOUND)
-                context.set_details('ServiceDependencyTemplate not found')
-                return system_pb2.ServiceDependencyTemplate()
-            return system_pb2.ServiceDependencyTemplate(
-                id=db_sdt.id, name=db_sdt.name, template_id=db_sdt.template_id, service_name=db_sdt.service_name,
-                depends_on_service_name=db_sdt.depends_on_service_name, config_name=db_sdt.config_name
-            )
-        finally:
-            db.close()
-
-    def CreateTask(self, request, context):
-        db = self._get_db()
-        try:
-            db_task = models.Task(name=request.name, project_id=request.project_id, team_id=request.team_id)
-            db.add(db_task)
-            db.commit()
-            db.refresh(db_task)
-            return system_pb2.Task(id=db_task.id, name=db_task.name, project_id=db_task.project_id, team_id=db_task.team_id)
-        finally:
-            db.close()
-
-    def GetTask(self, request, context):
-        db = self._get_db()
-        try:
-            db_task = db.query(models.Task).filter(models.Task.id == request.id).first()
-            if db_task is None:
-                context.set_code(grpc.StatusCode.NOT_FOUND)
-                context.set_details('Task not found')
-                return system_pb2.Task()
-            return system_pb2.Task(id=db_task.id, name=db_task.name, project_id=db_task.project_id, team_id=db_task.team_id)
-        finally:
-            db.close()
+    # --- Task Methods ---
+    def CreateTask(self, request, context): return self.task_servicer.Create(request, context)
+    def GetTask(self, request, context): return self.task_servicer.Get(request, context)
+    def ListTasks(self, request, context):
+        db_items = self.task_servicer.List(request, context)
+        return system_pb2.ListTasksResponse(tasks=db_items)
+    def DeleteTask(self, request, context): return self.task_servicer.Delete(request, context)
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     system_pb2_grpc.add_SystemServicer_to_server(SystemServicer(), server)
 
-    # Enable reflection
     SERVICE_NAMES = (
         system_pb2.DESCRIPTOR.services_by_name['System'].full_name,
         reflection.SERVICE_NAME,

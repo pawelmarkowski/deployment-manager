@@ -23,6 +23,10 @@ spec:
       labels:
         app: python-app
     spec:
+      initContainers:
+      - name: wait-for-postgres
+        image: postgres:13
+        command: ['sh', '-c', 'until pg_isready -h postgres -p 5432; do echo waiting for database; sleep 2; done;']
       containers:
         - name: python-app
           image: my-python-app

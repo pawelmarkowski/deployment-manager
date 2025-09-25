@@ -2,26 +2,65 @@ syntax = "proto3";
 
 package system;
 
+import "google/protobuf/empty.proto";
+
 service System {
+    // Product methods
     rpc CreateProduct(CreateProductRequest) returns (Product);
     rpc GetProduct(GetProductRequest) returns (Product);
+    rpc ListProducts(ListProductsRequest) returns (ListProductsResponse);
+    rpc DeleteProduct(DeleteProductRequest) returns (google.protobuf.Empty);
+
+    // Team methods
     rpc CreateTeam(CreateTeamRequest) returns (Team);
     rpc GetTeam(GetTeamRequest) returns (Team);
+    rpc ListTeams(ListTeamsRequest) returns (ListTeamsResponse);
+    rpc DeleteTeam(DeleteTeamRequest) returns (google.protobuf.Empty);
+
+    // Service methods
     rpc CreateService(CreateServiceRequest) returns (Service);
     rpc GetService(GetServiceRequest) returns (Service);
+    rpc ListServices(ListServicesRequest) returns (ListServicesResponse);
+    rpc DeleteService(DeleteServiceRequest) returns (google.protobuf.Empty);
+
+    // Config methods
     rpc CreateConfig(CreateConfigRequest) returns (Config);
     rpc GetConfig(GetConfigRequest) returns (Config);
+    rpc ListConfigs(ListConfigsRequest) returns (ListConfigsResponse);
+    rpc DeleteConfig(DeleteConfigRequest) returns (google.protobuf.Empty);
+
+    // ServiceDependency methods
     rpc CreateServiceDependency(CreateServiceDependencyRequest) returns (ServiceDependency);
     rpc GetServiceDependency(GetServiceDependencyRequest) returns (ServiceDependency);
+    rpc ListServiceDependencies(ListServiceDependenciesRequest) returns (ListServiceDependenciesResponse);
+    rpc DeleteServiceDependency(DeleteServiceDependencyRequest) returns (google.protobuf.Empty);
+
+    // Project methods
     rpc CreateProject(CreateProjectRequest) returns (Project);
     rpc GetProject(GetProjectRequest) returns (Project);
+    rpc ListProjects(ListProjectsRequest) returns (ListProjectsResponse);
+    rpc DeleteProject(DeleteProjectRequest) returns (google.protobuf.Empty);
+
+    // Template methods
     rpc CreateTemplate(CreateTemplateRequest) returns (Template);
     rpc GetTemplate(GetTemplateRequest) returns (Template);
+    rpc ListTemplates(ListTemplatesRequest) returns (ListTemplatesResponse);
+    rpc DeleteTemplate(DeleteTemplateRequest) returns (google.protobuf.Empty);
+
+    // ServiceDependencyTemplate methods
     rpc CreateServiceDependencyTemplate(CreateServiceDependencyTemplateRequest) returns (ServiceDependencyTemplate);
     rpc GetServiceDependencyTemplate(GetServiceDependencyTemplateRequest) returns (ServiceDependencyTemplate);
+    rpc ListServiceDependencyTemplates(ListServiceDependencyTemplatesRequest) returns (ListServiceDependencyTemplatesResponse);
+    rpc DeleteServiceDependencyTemplate(DeleteServiceDependencyTemplateRequest) returns (google.protobuf.Empty);
+
+    // Task methods
     rpc CreateTask(CreateTaskRequest) returns (Task);
     rpc GetTask(GetTaskRequest) returns (Task);
+    rpc ListTasks(ListTasksRequest) returns (ListTasksResponse);
+    rpc DeleteTask(DeleteTaskRequest) returns (google.protobuf.Empty);
 }
+
+// --- Message Definitions ---
 
 message Product {
     int32 id = 1;
@@ -92,92 +131,67 @@ message Task {
     int32 team_id = 4;
 }
 
-// Request and Response messages
+// --- Request and Response Messages ---
 
-message CreateProductRequest {
-    string name = 1;
-}
+// Product
+message CreateProductRequest { string name = 1; }
+message GetProductRequest { int32 id = 1; }
+message ListProductsRequest {}
+message ListProductsResponse { repeated Product products = 1; }
+message DeleteProductRequest { int32 id = 1; }
 
-message GetProductRequest {
-    int32 id = 1;
-}
+// Team
+message CreateTeamRequest { string name = 1; string url = 2; int32 product_id = 3; }
+message GetTeamRequest { int32 id = 1; }
+message ListTeamsRequest {}
+message ListTeamsResponse { repeated Team teams = 1; }
+message DeleteTeamRequest { int32 id = 1; }
 
-message CreateTeamRequest {
-    string name = 1;
-    string url = 2;
-    int32 product_id = 3;
-}
+// Service
+message CreateServiceRequest { string name = 1; int32 team_id = 2; }
+message GetServiceRequest { int32 id = 1; }
+message ListServicesRequest {}
+message ListServicesResponse { repeated Service services = 1; }
+message DeleteServiceRequest { int32 id = 1; }
 
-message GetTeamRequest {
-    int32 id = 1;
-}
+// Config
+message CreateConfigRequest { string name = 1; string url = 2; int32 service_id = 3; }
+message GetConfigRequest { int32 id = 1; }
+message ListConfigsRequest {}
+message ListConfigsResponse { repeated Config configs = 1; }
+message DeleteConfigRequest { int32 id = 1; }
 
-message CreateServiceRequest {
-    string name = 1;
-    int32 team_id = 2;
-}
+// ServiceDependency
+message CreateServiceDependencyRequest { string name = 1; string task_template = 2; int32 project_id = 3; int32 service_id = 4; int32 depends_on_service_id = 5; int32 config_id = 6; }
+message GetServiceDependencyRequest { int32 id = 1; }
+message ListServiceDependenciesRequest {}
+message ListServiceDependenciesResponse { repeated ServiceDependency service_dependencies = 1; }
+message DeleteServiceDependencyRequest { int32 id = 1; }
 
-message GetServiceRequest {
-    int32 id = 1;
-}
+// Project
+message CreateProjectRequest { string name = 1; }
+message GetProjectRequest { int32 id = 1; }
+message ListProjectsRequest {}
+message ListProjectsResponse { repeated Project projects = 1; }
+message DeleteProjectRequest { int32 id = 1; }
 
-message CreateConfigRequest {
-    string name = 1;
-    string url = 2;
-    int32 service_id = 3;
-}
+// Template
+message CreateTemplateRequest { string name = 1; }
+message GetTemplateRequest { int32 id = 1; }
+message ListTemplatesRequest {}
+message ListTemplatesResponse { repeated Template templates = 1; }
+message DeleteTemplateRequest { int32 id = 1; }
 
-message GetConfigRequest {
-    int32 id = 1;
-}
+// ServiceDependencyTemplate
+message CreateServiceDependencyTemplateRequest { string name = 1; int32 template_id = 2; string service_name = 3; string depends_on_service_name = 4; string config_name = 5; }
+message GetServiceDependencyTemplateRequest { int32 id = 1; }
+message ListServiceDependencyTemplatesRequest {}
+message ListServiceDependencyTemplatesResponse { repeated ServiceDependencyTemplate service_dependency_templates = 1; }
+message DeleteServiceDependencyTemplateRequest { int32 id = 1; }
 
-message CreateServiceDependencyRequest {
-    string name = 1;
-    string task_template = 2;
-    int32 project_id = 3;
-    int32 service_id = 4;
-    int32 depends_on_service_id = 5;
-    int32 config_id = 6;
-}
-
-message GetServiceDependencyRequest {
-    int32 id = 1;
-}
-
-message CreateProjectRequest {
-    string name = 1;
-}
-
-message GetProjectRequest {
-    int32 id = 1;
-}
-
-message CreateTemplateRequest {
-    string name = 1;
-}
-
-message GetTemplateRequest {
-    int32 id = 1;
-}
-
-message CreateServiceDependencyTemplateRequest {
-    string name = 1;
-    int32 template_id = 2;
-    string service_name = 3;
-    string depends_on_service_name = 4;
-    string config_name = 5;
-}
-
-message GetServiceDependencyTemplateRequest {
-    int32 id = 1;
-}
-
-message CreateTaskRequest {
-    string name = 1;
-    int32 project_id = 2;
-    int32 team_id = 3;
-}
-
-message GetTaskRequest {
-    int32 id = 1;
-}
+// Task
+message CreateTaskRequest { string name = 1; int32 project_id = 2; int32 team_id = 3; }
+message GetTaskRequest { int32 id = 1; }
+message ListTasksRequest {}
+message ListTasksResponse { repeated Task tasks = 1; }
+message DeleteTaskRequest { int32 id = 1; }
