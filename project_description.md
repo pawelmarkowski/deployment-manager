@@ -9,6 +9,7 @@
 * Opentelemetry
 * Tasks created in JIRA
 * gRPC communication
+* Prometheus metrics
 
 # Backstage.io system alternative focused on deployment plan for project
 
